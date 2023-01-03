@@ -7,7 +7,7 @@ data <- read.csv("movie_ratings_data.csv", fileEncoding = "utf-8")
 model <- lm(log10_proportion~rating, data = data)
 summary(model)
 
-# Add in the prediction interval
+# Add the prediction interval
 pred.int <- predict(model, interval = "prediction")
 mydata <- cbind(data, pred.int)
 

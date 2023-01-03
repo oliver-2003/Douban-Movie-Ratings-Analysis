@@ -75,7 +75,7 @@ p <- ggplot(mydata, aes(rating, log10_proportion)) +
 geom_point(colour="#4D4D4D") +labs(x="Rating", y="Five-Stars Proportion", title='Relationship between Rating and Five-Stars Proportion')+
 stat_smooth(method = lm, colour="black")
 ```
-
+![image](Linear Model.png)
 #### Graphing the prediction interval
 ```R
 p + geom_line(aes(y = lwr), color = "red", linetype = "dashed")+

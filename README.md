@@ -75,12 +75,13 @@ p <- ggplot(mydata, aes(rating, log10_proportion)) +
 geom_point(colour="#4D4D4D") +labs(x="Rating", y="Five-Stars Proportion", title='Relationship between Rating and Five-Stars Proportion')+
 stat_smooth(method = lm, colour="black")
 ```
-![image](Linear Model.png)
+
 #### Graphing the prediction interval
 ```R
 p + geom_line(aes(y = lwr), color = "red", linetype = "dashed")+
 geom_line(aes(y = upr), color = "red", linetype = "dashed")
 ```
+![image](https://github.com/oliver-2003/Douban-Movie-Ratings-Analysis/blob/main/Regression%20Models/Linear%20Model.png)
 
 #### Graphing the Multiple Linear Regression 
 ``` R
@@ -88,6 +89,7 @@ ggplot(data, aes(log10_proportion, rating, color=factor(is_made_in_china)))+geom
 labs(x="Five-stars Proportion", y="Rating", title="Relationship Between Rating and Five-stars Proportion")+
 theme_bw()+scale_y_log10()+geom_smooth(method="lm")+guides(color=guide_legend(title="Whether made in China \n (0:No, 1:Yes)"))
 ```
+![image](https://github.com/oliver-2003/Douban-Movie-Ratings-Analysis/blob/main/Regression%20Models/Multiple%20Regression%20Model.png)
 
 #### Graphing the Relationships Separately Based on Different Eras
 ```R
@@ -95,4 +97,5 @@ ggplot(data, aes(log10_proportion, rating, color=factor(is_made_in_china)))+geom
 labs(x="Five-stars Proportion", y="Rating", title="Relationship Between Rating and Five-stars Proportion")+
 theme_bw()+scale_y_log10()+geom_smooth(method="lm")+guides(color=guide_legend(title="Whether made in China \n (0:No, 1:Yes)"))+facet_wrap("era")
 ```
+![image](https://github.com/oliver-2003/Douban-Movie-Ratings-Analysis/blob/main/Regression%20Models/Multiple%20Regression%20By%20Era.png)
 

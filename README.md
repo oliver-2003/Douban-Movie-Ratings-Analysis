@@ -56,7 +56,7 @@ for row in df.itertuples():
 #### Generating "is_made_in_china" variable
 To consider the relationship between the rating and whether the movie is produced in China, assign 1 for movies that are made in China, and 0 for those that are not.
 #### Taking the Logarithm of the Five-Star Proportion
-To better fit the linear model, take log10 of the response variable "five-stars proportion."
+To better fit the linear model, take log10 of the response variable "five-star proportion."
 
 ### Data Analysis
 #### Building the Linear Regression Model 

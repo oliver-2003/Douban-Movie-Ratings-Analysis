@@ -26,7 +26,7 @@ df_tag_melt = pd.melt(df, id_vars=['name', 'rating', 'region', 'date', 'one', 't
                       value_vars=['tag1', 'tag2', 'tag3', 'tag4', 'tag5'], var_name="tag", value_name="tag_name")
 ```
 #### Splitting and Melting Regions 
-In the raw data, movies have their produced regions joined by "/". To consider the effect of the produced region, the region column must be firstly split into different columns by "/", and then melt into a single column.
+In the raw data, movies have their produced regions joined by "/". To consider the effect of the produced region, the region column must be firstly split into different columns by "/", and then melted into a single column.
 ```Python
 df_region_split = pd.DataFrame((x.split('/') for x in df_tag_melt['region']), columns=['region1', 'region2', 'region3', 'region4', 'region5', 6, 7, 8, 9, 10])
 df = pd.concat([df_tag_melt, df_region_split], axis=1)

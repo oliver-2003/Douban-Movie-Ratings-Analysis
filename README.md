@@ -1,5 +1,5 @@
 # Douban-Movie-Ratings-Analysis
-This project analyzes the relationship between the rating and the proportion of five-star ratings of movies on Douban, a Chinese online rating platform. By fitting the data to the linear model, this project reveals the prediction confidence interval of five-star proportions at each level of rating, showing that some movies display exceptional distribution of ratings.
+This project analyzes the relationship between the rating and the proportion of five-star ratings of movies on Douban, a Chinese online rating platform. By fitting the data to the linear model, this project reveals the prediction confidence interval of five-star proportions at each level of rating, showing that some movies display abnormal distribution of ratings.
 ## Data Collection
 ### Establishing Database
 This project uses MySQL to store data. Execute MovieRating.sql to prepare the data tables required.

@@ -1,14 +1,14 @@
 # Douban-Movie-Ratings-Analysis
-This project analyzes the relationship between the ratings of movies and the proportion of five-star ratings on Douban, a Chinese online rating platform. By fitting the data to the linear model, this project reveals the prediction confidence interval of five-star proportions, showing that some movies display exceptional distribution of ratings.
+This project analyzes the relationship between the rating and the proportion of five-star ratings of movies on Douban, a Chinese online rating platform. By fitting the data to the linear model, this project reveals the prediction confidence interval of five-star proportions, showing that some movies display exceptional distribution of ratings.
 ## Data Collection
 ### Establishing Database
 This project uses MySQL to store data. Execute MovieRating.sql to prepare the data tables required.
 ### Data Collection
-This project uses two step to collect data from Douban. 
-Firstly, this project uses Selenium to carry out the stratified sampling of movies in different eras. Selenium scrapes around 3800 URLs of the movies in total, with each URL directing to the individual page of the movies with the data of ratings, distribution of ratings, published region and date, and movie genra tags. Secondly, this project uses requests and regular expression to scrape data from the individual movie pages. 
+This project takes two steps to collect data from Douban. 
+Firstly, this project uses Selenium to carry out the stratified sampling of movies in different eras. Selenium scrapes around 3800 movie URLs in total, with each URL directing to the individual page of the movie with the rating, distribution of ratings, published region and date, and movie tags. Secondly, this project uses requests and regular expression to scrape data from the individual movie pages. 
 ### Data Preprocessing
-#### Melt columns of different tags
-Movies have different number of tags recorded in columns from tag1 to tag5. Melting all tags into one column generates a tag variable for further analysis.
+#### Melting columns of different tags
+Movies have different numbers of tags recorded in columns from tag1 to tag5. Melting all tags into one column generates a tag variable for further analysis.
 ```Python
 db = get_database_connection("localhost", 3306, "root", "123456")
 sql = """
@@ -25,8 +25,8 @@ df = pd.read_sql(sql, db)
 df_tag_melt = pd.melt(df, id_vars=['name', 'rating', 'region', 'date', 'one', 'two', 'three', 'four', 'five'],
                       value_vars=['tag1', 'tag2', 'tag3', 'tag4', 'tag5'], var_name="tag", value_name="tag_name")
 ```
-#### Spliting and Melting Regions 
-In the raw data, movies published in multiple regions have their published regions joined by "/". To take region into consideration, the region column must be firstly splited into different columns by "/", and then melt into a single column.
+#### Splitting and Melting Regions 
+In the raw data, movies have their produced regions joined by "/". To consider the effect of the produced region, the region column must be firstly split into different columns by "/", and then melt into a single column.
 ```Python
 df_region_split = pd.DataFrame((x.split('/') for x in df_tag_melt['region']), columns=['region1', 'region2', 'region3', 'region4', 'region5', 6, 7, 8, 9, 10])
 df = pd.concat([df_tag_melt, df_region_split], axis=1)
@@ -35,14 +35,14 @@ df = pd.melt(df, id_vars=['name', 'rating', 'date', 'one', 'two', 'three', 'four
 value_vars=['region1', 'region2', 'region3', 'region4', 'region5'], var_name='region',
 value_name='region_name')
 ```
-#### Droping Missing Values
-The operations of spliting and melting generate many rows with missing values. Droping the missing values keeps the valid data. 
+#### Dropping Missing Values
+The operations of splitting and melting generate many rows with missing values. Dropping the missing values keeps the valid data. 
 ```Python
 df = df.dropna()
 df = df.reset_index(drop=True)
 ```
 #### Generating the "Era" Variable
-To take the date published into consideration, assign the era of the movies as a variable according to the date published.
+To take the date released into consideration, assign the era of the movies as a variable according to the date released.
 ```Python
 # Use the era dict to assign "eras" for corresponding dates
 era_dict = {r"202\d": "2020s", r"201\d": "2010s", r"200\d": "2000s", r"199\d": "1990s", r"198\d": "1980s", r"197\d": "1970s", r"196\d": "1960s"}
@@ -54,7 +54,7 @@ for row in df.itertuples():
             break
 ```
 #### Generating "is_made_in_china" variable
-To consider the relationship between the rating and whether the movie is made in China, assign 1 for movies that are made in China, and 0 for those that are not.
+To consider the relationship between the rating and whether the movie is produced in China, assign 1 for movies that are made in China, and 0 for those that are not.
 #### Taking the Logarithm of the Five-Star Proportion
 To better fit the linear model, take log10 of the response variable "five-stars proportion."
 
@@ -83,7 +83,7 @@ geom_line(aes(y = upr), color = "red", linetype = "dashed")
 ```
 ![image](https://github.com/oliver-2003/Douban-Movie-Ratings-Analysis/blob/main/Regression%20Models/Linear%20Model.png)
 
-#### Graphing the Multiple Linear Regression 
+#### Graphing the Multiple Linear Regression Model
 ``` R
 ggplot(data, aes(log10_proportion, rating, color=factor(is_made_in_china)))+geom_point()+
 labs(x="Five-stars Proportion", y="Rating", title="Relationship Between Rating and Five-stars Proportion")+
@@ -91,7 +91,7 @@ theme_bw()+scale_y_log10()+geom_smooth(method="lm")+guides(color=guide_legend(ti
 ```
 ![image](https://github.com/oliver-2003/Douban-Movie-Ratings-Analysis/blob/main/Regression%20Models/Multiple%20Regression%20Model.png)
 
-#### Graphing the Relationships Separately Based on Different Eras
+#### Graphing the Relationships Separately Based on Eras
 ```R
 ggplot(data, aes(log10_proportion, rating, color=factor(is_made_in_china)))+geom_point()+
 labs(x="Five-stars Proportion", y="Rating", title="Relationship Between Rating and Five-stars Proportion")+
